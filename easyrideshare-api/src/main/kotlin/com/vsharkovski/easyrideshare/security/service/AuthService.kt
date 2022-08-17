@@ -61,7 +61,7 @@ class AuthService(
             }
         }
         val user =
-            User(id = 0, username = username, password = passwordEncoder.encode(password), roles = roles, email = email)
+            User(username = username, password = passwordEncoder.encode(password), roles = roles, email = email)
         return try {
             logger.info("Saving new user [{}]", user)
             userRepository.save(user)

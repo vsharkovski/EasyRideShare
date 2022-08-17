@@ -38,7 +38,7 @@ class AuthTokenFilter : OncePerRequestFilter() {
                 SecurityContextHolder.getContext().authentication = authentication
             }
         } catch (e: Exception) {
-            loggerSLF4J.error("Cannot set user authentication [{}]", e.message)
+            loggerSLF4J.error("Cannot set user authentication [{}]", e.message, e)
         }
         filterChain.doFilter(request, response)
     }

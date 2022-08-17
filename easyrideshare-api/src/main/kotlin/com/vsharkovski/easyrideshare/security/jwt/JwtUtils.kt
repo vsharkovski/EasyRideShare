@@ -52,11 +52,11 @@ class JwtUtils(
         true
     } catch (e: Exception) {
         when (e) {
-            is SignatureException -> logger.error("Invalid JWT signature [{}]", e.message)
-            is MalformedJwtException -> logger.error("Invalid JWT token [{}]", e.message)
-            is ExpiredJwtException -> logger.error("JWT token is expired [{}]", e.message)
-            is UnsupportedJwtException -> logger.error("JWT token is unsupported [{}]", e.message)
-            is IllegalArgumentException -> logger.error("JWT claims string is empty [{}]", e.message)
+            is SignatureException -> logger.error("Invalid JWT signature [{}]", e.message, e)
+            is MalformedJwtException -> logger.error("Invalid JWT token [{}]", e.message, e)
+            is ExpiredJwtException -> logger.error("JWT token is expired [{}]", e.message, e)
+            is UnsupportedJwtException -> logger.error("JWT token is unsupported [{}]", e.message, e)
+            is IllegalArgumentException -> logger.error("JWT claims string is empty [{}]", e.message, e)
         }
         false
     }
