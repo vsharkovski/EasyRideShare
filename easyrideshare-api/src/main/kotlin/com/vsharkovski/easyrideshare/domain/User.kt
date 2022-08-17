@@ -11,16 +11,16 @@ data class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @NotBlank
-    @Size(max = 20)
+    @get:NotBlank
+    @get:Size(max = 20)
     val username: String,
 
-    @NotBlank
-    @Size(max = 120)
+    @get:NotBlank
+    @get:Size(max = 120)
     val password: String,
 
-    @NotBlank
-    @Size(max = 50)
+    @get:NotBlank
+    @get:Size(max = 50)
     val email: String,
 
     @ManyToMany(fetch = FetchType.LAZY)
