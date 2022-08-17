@@ -1,11 +1,10 @@
-package com.vsharkovski.easyrideshare.service
+package com.vsharkovski.easyrideshare.security.service
 
 import com.vsharkovski.easyrideshare.api.LoginRequest
 import com.vsharkovski.easyrideshare.domain.*
 import com.vsharkovski.easyrideshare.repository.RoleRepository
 import com.vsharkovski.easyrideshare.repository.UserRepository
 import com.vsharkovski.easyrideshare.security.jwt.JwtUtils
-import com.vsharkovski.easyrideshare.security.service.UserDetailsImpl
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

@@ -2,7 +2,7 @@ package com.vsharkovski.easyrideshare.api
 
 import com.vsharkovski.easyrideshare.domain.*
 import com.vsharkovski.easyrideshare.security.jwt.JwtUtils
-import com.vsharkovski.easyrideshare.service.AuthService
+import com.vsharkovski.easyrideshare.security.service.AuthService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
