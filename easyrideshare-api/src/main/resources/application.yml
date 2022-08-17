@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/easyrideshare
+    username: vlatko
+    password: vlatko
+  jpa:
+    hibernate:
+      dll-auto: validate
+  flyway:
+    locations:
+      - classpath:db/migration
+logging:
+  file:
+    path: logs
+easyRideShare:
+  app:
+    jwtCookieName: easyrideshare
+    jwtSecret: secretkeytempqwhrfuiahzndsifqauwhdiwh
+    jwtExpirationMs: 86400000
