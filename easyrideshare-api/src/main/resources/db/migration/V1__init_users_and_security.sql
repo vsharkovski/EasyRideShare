@@ -2,7 +2,8 @@ create table users (
     id bigserial primary key,
     username varchar(20) not null,
     password varchar(120) not null,
-    email varchar(50) not null
+    email varchar(50) not null,
+    creation_time timestamp not null
 );
 
 create table roles (

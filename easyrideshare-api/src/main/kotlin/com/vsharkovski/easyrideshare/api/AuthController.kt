@@ -32,7 +32,7 @@ class AuthController(
         when (authService.registerUser(
             username = registrationRequest.username,
             password = registrationRequest.password,
-            rolesStr = registrationRequest.role,
+            rolesStrings = registrationRequest.role,
             email = registrationRequest.email
         )) {
             is AuthRegisterSuccess ->
@@ -41,6 +41,8 @@ class AuthController(
                 ResponseEntity.badRequest().body(AuthMessageResponse(false, "Username already exists"))
             is AuthEmailExistsFail ->
                 ResponseEntity.badRequest().body(AuthMessageResponse(false, "Email is already in use"))
+            is AuthInvalidParametersFail ->
+                ResponseEntity.badRequest().body(AuthMessageResponse(false, "Invalid parameters"))
             is AuthSavingUserFail ->
                 ResponseEntity.badRequest().body(AuthMessageResponse(false, "Internal server error"))
         }

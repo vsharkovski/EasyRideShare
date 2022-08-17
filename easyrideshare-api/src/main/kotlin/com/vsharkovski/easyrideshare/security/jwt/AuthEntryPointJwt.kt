@@ -17,8 +17,8 @@ class AuthEntryPointJwt : AuthenticationEntryPoint {
         authException: AuthenticationException?
     ) {
         authException?.let {
-            logger.error("Unauthorized error [{}]", it.message, it)
-            response?.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized")
+            logger.error("Unauthorized error [{}]", it.message)
+            response?.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
         }
     }
 }

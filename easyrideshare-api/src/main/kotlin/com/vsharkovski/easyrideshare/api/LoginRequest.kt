@@ -3,9 +3,9 @@ package com.vsharkovski.easyrideshare.api
 import javax.validation.constraints.NotBlank
 
 data class LoginRequest(
-    @get:NotBlank
+    @field:NotBlank
     val username: String,
 
-    @get:NotBlank
+    @field:NotBlank
     val password: String
 )

@@ -23,3 +23,5 @@ object AuthUsernameExistsFail : AuthRegisterResult
 object AuthEmailExistsFail : AuthRegisterResult
 
 object AuthSavingUserFail : AuthRegisterResult
+
+object AuthInvalidParametersFail : AuthRegisterResult

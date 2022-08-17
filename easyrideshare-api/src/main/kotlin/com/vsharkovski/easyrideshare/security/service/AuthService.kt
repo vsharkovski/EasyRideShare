@@ -5,7 +5,9 @@ import com.vsharkovski.easyrideshare.domain.*
 import com.vsharkovski.easyrideshare.repository.RoleRepository
 import com.vsharkovski.easyrideshare.repository.UserRepository
 import com.vsharkovski.easyrideshare.security.jwt.JwtUtils
+import com.vsharkovski.easyrideshare.service.ApiDomainService
 import org.slf4j.LoggerFactory
+import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -18,11 +20,10 @@ class AuthService(
     val userRepository: UserRepository,
     val roleRepository: RoleRepository,
     val passwordEncoder: PasswordEncoder,
-    val jwtUtils: JwtUtils
+    val jwtUtils: JwtUtils,
+    val apiDomainService: ApiDomainService
 ) {
     private val logger = LoggerFactory.getLogger(AuthService::class.java)
-    private val stringRoleToEnum =
-        mapOf("admin" to ERole.ROLE_ADMIN, "moderator" to ERole.ROLE_MODERATOR, "user" to ERole.ROLE_USER)
 
     fun authenticateUser(loginRequest: LoginRequest): AuthLoginResult {
         val authentication = authenticationManager.authenticate(
@@ -32,15 +33,18 @@ class AuthService(
         val userDetails = authentication.principal as UserDetailsImpl
         val jwtCookie = jwtUtils.generateJwtCookie(userDetails)
         return AuthLoginSuccess(
-            userDetails.id, userDetails.username, userDetails.email,
-            userDetails.authorities.map { it.authority.toString() }, jwtCookie.toString()
+            id = userDetails.id,
+            username = userDetails.username,
+            email = userDetails.email,
+            roles = userDetails.authorities.map { it.authority.toString() },
+            jwtCookie = jwtCookie.toString()
         )
     }
 
     fun registerUser(
         username: String,
         password: String,
-        rolesStr: Set<String>,
+        rolesStrings: Set<String>,
         email: String,
     ): AuthRegisterResult {
         if (userRepository.existsByUsernameIgnoreCase(username)) {
@@ -49,19 +53,20 @@ class AuthService(
         if (userRepository.existsByEmailIgnoreCase(email)) {
             return AuthEmailExistsFail
         }
-        val roles = HashSet<Role>()
-        if (rolesStr.isEmpty()) {
-            roleRepository.findByName(ERole.ROLE_USER)?.let { roles.add(it) }
-                ?: throw RuntimeException("Role not found.")
+        val roles = if (rolesStrings.isEmpty()) {
+            listOf(roleRepository.findByName(ERole.ROLE_USER) ?: throw RuntimeException("Role not found"))
         } else {
-            rolesStr.forEach {
-                val roleEnum = stringRoleToEnum[it] ?: throw RuntimeException("Unrecognized role.")
-                val role = roleRepository.findByName(roleEnum) ?: throw RuntimeException("Role not found.")
-                roles.add(role)
+            rolesStrings.map {
+                val roleEnum = apiDomainService.roleStringToEnum[it]
+                    ?: throw RuntimeException("Unrecognized role")
+                roleRepository.findByName(roleEnum) ?: throw RuntimeException("Role not found")
             }
-        }
-        val user =
+        }.toSet()
+        val user = try {
             User(username = username, password = passwordEncoder.encode(password), roles = roles, email = email)
+        } catch (e: Exception) {
+            return AuthInvalidParametersFail
+        }
         return try {
             logger.info("Saving new user [{}]", user)
             userRepository.save(user)
@@ -70,4 +75,10 @@ class AuthService(
             AuthSavingUserFail
         }
     }
+
+    fun getAuthenticatedUserId(): Long? =
+        when (val authentication = SecurityContextHolder.getContext().authentication) {
+            is AnonymousAuthenticationToken -> null
+            else -> (authentication.principal as UserDetailsImpl).id
+        }
 }

@@ -6,18 +6,18 @@ import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
 data class RegistrationRequest(
-    @get:NotBlank
-    @get:Size(min = 3, max = 20)
-    @get:Pattern(regexp = "^[A-Za-z\\d]+\$")
+    @field:NotBlank
+    @field:Size(min = 3, max = 20)
+    @field:Pattern(regexp = "^[A-Za-z\\d]+\$")
     val username: String,
 
-    @get:NotBlank
-    @get:Size(max = 50)
-    @get:Email
+    @field:NotBlank
+    @field:Size(max = 50)
+    @field:Email
     val email: String,
 
-    @get:NotBlank
-    @get:Size(min = 6, max = 40)
+    @field:NotBlank
+    @field:Size(min = 6, max = 40)
     val password: String,
 
     val role: Set<String> = emptySet()

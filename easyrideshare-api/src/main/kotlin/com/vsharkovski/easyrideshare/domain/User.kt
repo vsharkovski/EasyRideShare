@@ -1,5 +1,6 @@
 package com.vsharkovski.easyrideshare.domain
 
+import java.sql.Timestamp
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
@@ -9,19 +10,17 @@ import javax.validation.constraints.Size
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long = 0,
 
-    @get:NotBlank
-    @get:Size(max = 20)
+    val creationTime: Timestamp = Timestamp(System.currentTimeMillis()),
+
+    @field:NotBlank
+    @field:Size(max = 20)
     val username: String,
 
-    @get:NotBlank
-    @get:Size(max = 120)
+    @field:NotBlank
+    @field:Size(max = 120)
     val password: String,
-
-    @get:NotBlank
-    @get:Size(max = 50)
-    val email: String,
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -30,6 +29,10 @@ data class User(
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
     val roles: Set<Role>,
+
+    @field:NotBlank
+    @field:Size(max = 50)
+    val email: String
 ) {
     override fun toString(): String = "User(id=$id, username=$username, roles=$roles)"
 }

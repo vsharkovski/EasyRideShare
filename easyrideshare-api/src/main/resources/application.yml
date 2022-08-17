@@ -1,3 +1,4 @@
+# Should set logging level to ERROR on production, and INFO on dev / test
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/easyrideshare
