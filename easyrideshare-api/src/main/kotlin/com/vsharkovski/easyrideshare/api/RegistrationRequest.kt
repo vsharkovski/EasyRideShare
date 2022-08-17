@@ -20,5 +20,5 @@ data class RegistrationRequest(
     @get:Size(min = 6, max = 40)
     val password: String,
 
-    val role: Set<String> = setOf()
+    val role: Set<String> = emptySet()
 )
