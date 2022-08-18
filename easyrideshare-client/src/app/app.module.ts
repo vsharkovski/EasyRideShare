@@ -11,6 +11,8 @@ import { PostListComponent } from './component/post-list/post-list.component';
 import { HomeFeedComponent } from './component/home-feed/home-feed.component';
 import { NotFoundComponent } from './component/not-found/not-found.component';
 import { httpInterceptorProviders } from './interceptor/http-interceptor';
+import { LoginComponent } from './login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -19,8 +21,15 @@ import { httpInterceptorProviders } from './interceptor/http-interceptor';
         PostListComponent,
         HomeFeedComponent,
         NotFoundComponent,
+        LoginComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, NgbModule, HttpClientModule],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+    ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent],
 })
