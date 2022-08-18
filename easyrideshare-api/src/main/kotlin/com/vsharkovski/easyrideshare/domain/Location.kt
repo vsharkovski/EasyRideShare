@@ -16,7 +16,7 @@ data class Location(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
-    val creator: User?,
+    val creator: User? = null,
 
     @field:NotBlank
     @field:Size(min = 3, max = 50)
