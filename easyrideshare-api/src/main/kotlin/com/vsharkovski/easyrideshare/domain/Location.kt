@@ -26,5 +26,5 @@ data class Location(
 
     val longitude: Float,
 ) {
-    override fun toString() = "Location(id=$id, name=$name, latitude=$latitude, longitude=$longitude)"
+    override fun toString() = "Location(id=$id, name=$name, latitude=$latitude, longitude=$longitude, creator=$creator)"
 }
