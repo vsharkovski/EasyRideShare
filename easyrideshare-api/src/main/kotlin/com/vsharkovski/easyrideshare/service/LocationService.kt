@@ -1,6 +1,5 @@
 package com.vsharkovski.easyrideshare.service
 
-import com.vsharkovski.easyrideshare.api.CreateOrFindLocationHolder
 import com.vsharkovski.easyrideshare.domain.*
 import com.vsharkovski.easyrideshare.repository.LocationRepository
 import org.slf4j.LoggerFactory
@@ -15,12 +14,8 @@ class LocationService(
 
     fun findLocationById(id: Long): Location? = locationRepository.findByIdOrNull(id)
 
-    fun createLocation(name: String, latitude: Float, longitude: Float, creator: User?): LocationResult {
-        val location = try {
-            Location(name = name, latitude = latitude, longitude = longitude, creator = creator)
-        } catch (e: Exception) {
-            return LocationInvalidParametersFail
-        }
+    fun createLocation(name: String, latitude: Float, longitude: Float, creator: User? = null): LocationResult {
+        val location = Location(name = name, latitude = latitude, longitude = longitude, creator = creator)
         if (locationRepository.existsByNameIgnoreCase(name)) {
             return LocationNameExistsFail
         }
@@ -33,10 +28,16 @@ class LocationService(
         }
     }
 
-    fun findOrCreateLocation(holder: CreateOrFindLocationHolder, creator: User?): Location? =
-        if (holder.id == 0L) {
-            if (holder.name != null && holder.latitude != null && holder.longitude != null) {
-                when (val result = createLocation(holder.name, holder.latitude, holder.longitude, creator)) {
+    fun findOrCreateLocation(
+        id: Long? = null,
+        name: String? = null,
+        latitude: Float? = null,
+        longitude: Float? = null,
+        creator: User? = null
+    ): Location? =
+        if (id == null) {
+            if (name != null && latitude != null && longitude != null) {
+                when (val result = createLocation(name, latitude, longitude, creator)) {
                     is LocationCreated -> result.location
                     else -> null
                 }
@@ -44,6 +45,6 @@ class LocationService(
                 null
             }
         } else {
-            findLocationById(holder.id)
+            findLocationById(id)
         }
 }

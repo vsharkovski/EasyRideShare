@@ -29,7 +29,11 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "mockito-core")
+	}
+	testImplementation("io.mockk:mockk:1.12.5")
+	testImplementation("com.ninja-squad:springmockk:3.1.1")
 	testImplementation("org.springframework.security:spring-security-test")
 }
 

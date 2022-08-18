@@ -32,10 +32,10 @@ class PostService(
         intendedTravelTime: Timestamp?
     ): PostResult {
         val creator = userRepository.findByIdOrNull(creatorId) ?: return PostMissingUserFail
-        val startLocation = locationService.findOrCreateLocation(startLocationHolder, creator)
-            ?: return PostInvalidLocationFail
-        val endLocation = locationService.findOrCreateLocation(endLocationHolder, creator)
-            ?: return PostInvalidLocationFail
+        val (startLocation, endLocation) = listOf(startLocationHolder, endLocationHolder).map {
+            locationService.findOrCreateLocation(it.id, it.name, it.latitude, it.longitude, creator)
+                ?: return PostInvalidLocationFail
+        }
         val post = try {
             Post(
                 creator = creator,
