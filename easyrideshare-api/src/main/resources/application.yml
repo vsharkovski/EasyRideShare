@@ -13,7 +13,7 @@ spring:
       - classpath:db/migration
 logging:
   file:
-    path: logs
+    path: easyrideshare-api/logs
 easyRideShare:
   app:
     jwtCookieName: easyrideshare
