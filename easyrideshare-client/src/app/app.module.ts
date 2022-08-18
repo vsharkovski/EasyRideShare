@@ -6,11 +6,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { PostListComponent } from './post-list/post-list.component';
-import { HomeFeedComponent } from './home-feed/home-feed.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { httpInterceptorProviders } from './http-interceptor';
+import { NavbarComponent } from './component/navbar/navbar.component';
+import { PostListComponent } from './component/post-list/post-list.component';
+import { HomeFeedComponent } from './component/home-feed/home-feed.component';
+import { NotFoundComponent } from './component/not-found/not-found.component';
+import { httpInterceptorProviders } from './interceptor/http-interceptor';
 
 @NgModule({
     declarations: [

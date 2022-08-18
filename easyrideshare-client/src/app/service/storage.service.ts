@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from './user.model';
+import { User } from '../model/user.model';
 
 const USER_KEY = 'auth-user';
 
