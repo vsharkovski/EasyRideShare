@@ -4,6 +4,8 @@ sealed interface LocationResult
 
 data class LocationCreated(val location: Location) : LocationResult
 
-object LocationInvalidParametersError : LocationResult
+object LocationInvalidParametersFail : LocationResult
 
-object LocationDatabaseSavingError : LocationResult
+object LocationNameExistsFail : LocationResult
+
+object LocationDatabaseSavingFail : LocationResult

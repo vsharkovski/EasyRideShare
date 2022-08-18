@@ -16,19 +16,20 @@ class LocationService(
     fun findLocationById(id: Long): Location? = locationRepository.findByIdOrNull(id)
 
     fun createLocation(name: String, latitude: Float, longitude: Float, creator: User?): LocationResult {
-        // TODO: Check for existing names from other locations
         val location = try {
-            // If parameters cannot be validated, exception is thrown
             Location(name = name, latitude = latitude, longitude = longitude, creator = creator)
         } catch (e: Exception) {
-            return LocationInvalidParametersError
+            return LocationInvalidParametersFail
+        }
+        if (locationRepository.existsByNameIgnoreCase(name)) {
+            return LocationNameExistsFail
         }
         logger.info("Saving location [{}]", location)
         return try {
             LocationCreated(locationRepository.save(location))
         } catch (e: Exception) {
             logger.error("Error in saving location [{}]", e.message, e)
-            LocationDatabaseSavingError
+            LocationDatabaseSavingFail
         }
     }
 

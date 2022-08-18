@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface LocationRepository : JpaRepository<Location, Long> {
+    fun existsByNameIgnoreCase(name: String): Boolean
 }
