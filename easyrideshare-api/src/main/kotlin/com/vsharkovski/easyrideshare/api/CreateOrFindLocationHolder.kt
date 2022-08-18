@@ -3,9 +3,9 @@ package com.vsharkovski.easyrideshare.api
 data class CreateOrFindLocationHolder(
     val id: Long,
 
-    val name: String?,
+    val name: String? = null,
 
-    val latitude: Float?,
+    val latitude: Float? = null,
 
-    val longitude: Float?,
+    val longitude: Float? = null,
 )
