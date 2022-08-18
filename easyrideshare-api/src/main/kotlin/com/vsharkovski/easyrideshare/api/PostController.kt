@@ -49,8 +49,6 @@ class PostController(
         return when (result) {
             is PostCreated ->
                 ResponseEntity.ok(PostInfoResponse(apiDomainService.postToPublic(result.post)))
-            is PostInvalidParametersFail ->
-                ResponseEntity.badRequest().body(PostMessageResponse(false, "Invalid parameters"))
             is PostInvalidLocationFail ->
                 ResponseEntity.badRequest().body(PostMessageResponse(false, "Invalid location data"))
             is PostMissingUserFail, PostDatabaseSavingFail ->

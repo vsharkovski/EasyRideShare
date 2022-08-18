@@ -9,5 +9,3 @@ object PostDatabaseSavingFail : PostResult
 object PostMissingUserFail : PostResult
 
 object PostInvalidLocationFail : PostResult
-
-object PostInvalidParametersFail : PostResult

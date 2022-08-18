@@ -36,19 +36,15 @@ class PostService(
             locationService.findOrCreateLocation(it.id, it.name, it.latitude, it.longitude, creator)
                 ?: return PostInvalidLocationFail
         }
-        val post = try {
-            Post(
-                creator = creator,
-                status = EPostStatus.AVAILABLE,
-                transportType = transportType,
-                startLocation = startLocation,
-                endLocation = endLocation,
-                description = description,
-                intendedTravelTime = intendedTravelTime
-            )
-        } catch (e: Exception) {
-            return PostInvalidParametersFail
-        }
+        val post = Post(
+            creator = creator,
+            status = EPostStatus.AVAILABLE,
+            transportType = transportType,
+            startLocation = startLocation,
+            endLocation = endLocation,
+            description = description,
+            intendedTravelTime = intendedTravelTime
+        )
         logger.info("Saving post [{}]", post)
         return try {
             PostCreated(postRepository.save(post))
