@@ -14,6 +14,8 @@ import { httpInterceptorProviders } from './interceptor/http-interceptor';
 import { LoginComponent } from './component/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './component/register/register.component';
+import { PostCardComponent } from './component/post-card/post-card.component';
+import { TransportTypePipe } from './shared/transport-type.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +25,8 @@ import { RegisterComponent } from './component/register/register.component';
     NotFoundComponent,
     LoginComponent,
     RegisterComponent,
+    PostCardComponent,
+    TransportTypePipe,
   ],
   imports: [
     BrowserModule,
