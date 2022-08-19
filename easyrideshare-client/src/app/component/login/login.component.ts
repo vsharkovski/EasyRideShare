@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     const { username, password } = this.form.value;
-    this.authService.login(username as string, password as string);
+    this.authService.login(username!, password!);
   }
 
   get usernameField(): AbstractControl {
