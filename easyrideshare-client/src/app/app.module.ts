@@ -14,25 +14,24 @@ import { httpInterceptorProviders } from './interceptor/http-interceptor';
 import { LoginComponent } from './component/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './component/register/register.component';
-
 @NgModule({
-    declarations: [
-        AppComponent,
-        NavbarComponent,
-        PostListComponent,
-        HomeFeedComponent,
-        NotFoundComponent,
-        LoginComponent,
-        RegisterComponent,
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        NgbModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-    ],
-    providers: [httpInterceptorProviders],
-    bootstrap: [AppComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    PostListComponent,
+    HomeFeedComponent,
+    NotFoundComponent,
+    LoginComponent,
+    RegisterComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+  ],
+  providers: [httpInterceptorProviders],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

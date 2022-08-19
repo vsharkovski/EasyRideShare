@@ -1,1 +1,85 @@
-<p>register works!</p>
+<div class="col-6 mx-auto">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" #f="ngForm">
+    <div class="row">
+      <div class="col-md mt-1">
+        <label for="username" class="form-label">Username</label>
+        <input
+          formControlName="username"
+          [class.is-invalid]="usernameField.invalid && (usernameField.dirty || usernameField.touched)"
+          [class.is-valid]="usernameField.valid"
+          class="form-control"
+          id="username"
+        />
+        <div *ngIf="usernameField.valid" class="valid-feedback">Looks good!</div>
+        <div *ngIf="usernameField.errors?.['required']" class="invalid-feedback">Please provide a username.</div>
+        <div *ngIf="usernameField.errors?.['minlength']" class="invalid-feedback">Your username is too short.</div>
+        <div *ngIf="usernameField.errors?.['maxlength']" class="invalid-feedback">Your username is too long.</div>
+        <div *ngIf="usernameField.errors?.['pattern']" class="invalid-feedback">
+          You may only use letters and numbers.
+        </div>
+      </div>
+      <div class="col-md mt-1">
+        <label for="email" class="form-label">Email</label>
+        <input
+          formControlName="email"
+          [class.is-invalid]="emailField.invalid && (emailField.dirty || emailField.touched)"
+          [class.is-valid]="emailField.valid"
+          type="email"
+          class="form-control"
+          id="email"
+        />
+        <div *ngIf="emailField.valid" class="valid-feedback">Looks good!</div>
+        <div *ngIf="emailField.errors?.['required']" class="invalid-feedback">Please provide an email.</div>
+        <div *ngIf="emailField.errors?.['maxlength'] || emailField.errors?.['email']" class="invalid-feedback">
+          Please provide a valid email.
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mt-1">
+        <label for="password" class="form-label">Password</label>
+        <input
+          formControlName="password"
+          [class.is-invalid]="passwordField.invalid && (passwordField.dirty || passwordField.touched)"
+          [class.is-valid]="passwordField.valid"
+          type="password"
+          class="form-control"
+          id="password"
+        />
+        <div *ngIf="passwordField.valid" class="valid-feedback">Looks good!</div>
+        <div *ngIf="passwordField.errors?.['required']" class="invalid-feedback">Please provide a password.</div>
+        <div
+          *ngIf="passwordField.errors?.['minlength'] || passwordField.errors?.['maxlength']"
+          class="invalid-feedback"
+        >
+          Your password must have between 6 and 40 characters.
+        </div>
+      </div>
+      <div class="col-md mt-1">
+        <label for="passwordConfirm" class="form-label">Password again</label>
+        <input
+          formControlName="passwordConfirm"
+          [class.is-invalid]="form.errors?.['passwordConfirm'] && (passwordConfirmField.dirty || passwordConfirmField.touched)"
+          [class.is-valid]="passwordField.valid && !form.errors?.['passwordConfirm']"
+          type="password"
+          class="form-control"
+          id="passwordConfirm"
+        />
+        <div *ngIf="!form.errors?.['passwordConfirm']" class="valid-feedback">Looks good!</div>
+        <div *ngIf="form.errors?.['passwordConfirm']" class="invalid-feedback">Passwords do not match</div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <button [disabled]="form.invalid" type="submit" class="btn btn-dark col-md-3 ms-auto">Submit</button>
+    </div>
+  </form>
+  <div *ngIf="f.submitted && authMessage" class="row mt-3">
+    <div class="alert alert-danger" *ngIf="!authMessage.success">
+      <span>Could not sign up!</span><br /><span>{{ authMessage.message }}</span>
+    </div>
+    <div class="alert alert-success" *ngIf="authMessage.success">
+      <span>Successfully signed up!</span><br />
+      <span><a [routerLink]="['/sign-in']">Click here to sign in.</a></span>
+    </div>
+  </div>
+</div>
