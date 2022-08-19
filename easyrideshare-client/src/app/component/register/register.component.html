@@ -69,8 +69,8 @@
         <div *ngIf="form.errors?.['passwordConfirm']" class="invalid-feedback">Passwords do not match</div>
       </div>
     </div>
-    <div class="row mt-3">
-      <button [disabled]="form.invalid" type="submit" class="btn btn-dark col-md-3 ms-auto">Submit</button>
+    <div class="row mt-3 justify-content-end">
+      <button [disabled]="form.invalid" type="submit" class="btn btn-dark col-md-auto">Submit</button>
     </div>
   </form>
   <div *ngIf="f.submitted && authMessage" class="row mt-3">
