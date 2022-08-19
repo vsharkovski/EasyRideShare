@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { iif, interval, of, Subscription, switchMap, take, timer } from 'rxjs';
-import { AuthMessage, AuthService } from '../service/auth.service';
-import { StorageService } from '../service/storage.service';
+import { AuthMessage, AuthService } from '../../service/auth.service';
+import { StorageService } from '../../service/storage.service';
 
 @Component({
     selector: 'ers-login',
