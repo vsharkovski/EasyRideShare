@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   });
 
   authMessage?: AuthMessage;
-  readonly redirectWaitTime: number = 5;
+  readonly redirectWaitTime: number = 3;
   redirectElapsedTime?: number = undefined;
 
   redirectSubscription?: Subscription;
