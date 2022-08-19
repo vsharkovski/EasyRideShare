@@ -19,6 +19,4 @@ data class RegistrationRequest(
     @field:NotBlank
     @field:Size(min = 6, max = 40)
     val password: String,
-
-    val role: Set<String> = emptySet()
 )

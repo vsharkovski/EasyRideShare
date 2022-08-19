@@ -8,7 +8,7 @@ data class AuthLoginSuccess(
     val id: Long,
     val username: String,
     val email: String,
-    val roles: List<String>,
+    val roles: List<ERole>,
     val jwtCookie: String
 ) : AuthLoginResult
 

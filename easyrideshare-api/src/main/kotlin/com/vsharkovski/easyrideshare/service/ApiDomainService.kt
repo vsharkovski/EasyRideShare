@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service
 class ApiDomainService {
     final val roleStringToEnum: Map<String, ERole> =
         mapOf(
-            "admin" to ERole.ROLE_ADMIN,
-            "moderator" to ERole.ROLE_MODERATOR,
-            "user" to ERole.ROLE_USER
+            "ROLE_ADMIN" to ERole.ROLE_ADMIN,
+            "ROLE_MODERATOR" to ERole.ROLE_MODERATOR,
+            "ROLE_USER" to ERole.ROLE_USER
         )
 
-    private final val roleEnumToString: Map<ERole, String> = roleStringToEnum.entries.associate { it.value to it.key }
+    final val roleEnumToString: Map<ERole, String> = roleStringToEnum.entries.associate { it.value to it.key }
 
     final val transportTypeStringToEnum: Map<String, ETransportType> =
         mapOf(
-            "owned_vehicle" to ETransportType.OWNED_VEHICLE,
-            "hired_vehicle" to ETransportType.HIRED_VEHICLE
+            "OWNED_VEHICLE" to ETransportType.OWNED_VEHICLE,
+            "HIRED_VEHICLE" to ETransportType.HIRED_VEHICLE
         )
 
     private final val transportTypeEnumToString: Map<ETransportType, String> =
@@ -29,10 +29,10 @@ class ApiDomainService {
 
     private final val postStatusStringToEnum: Map<String, EPostStatus> =
         mapOf(
-            "available" to EPostStatus.AVAILABLE,
-            "completed" to EPostStatus.COMPLETED,
-            "cancelled" to EPostStatus.CANCELLED,
-            "full" to EPostStatus.FULL
+            "AVAILABLE" to EPostStatus.AVAILABLE,
+            "COMPLETED" to EPostStatus.COMPLETED,
+            "CANCELLED" to EPostStatus.CANCELLED,
+            "FULL" to EPostStatus.FULL
         )
 
     private final val postStatusEnumToString: Map<EPostStatus, String> =

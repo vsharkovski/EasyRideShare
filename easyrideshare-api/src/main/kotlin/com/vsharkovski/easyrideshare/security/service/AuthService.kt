@@ -1,6 +1,5 @@
 package com.vsharkovski.easyrideshare.security.service
 
-import com.vsharkovski.easyrideshare.api.LoginRequest
 import com.vsharkovski.easyrideshare.domain.*
 import com.vsharkovski.easyrideshare.repository.RoleRepository
 import com.vsharkovski.easyrideshare.repository.UserRepository
@@ -10,6 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -25,18 +25,26 @@ class AuthService(
 ) {
     private val logger = LoggerFactory.getLogger(AuthService::class.java)
 
-    fun authenticateUser(loginRequest: LoginRequest): AuthLoginResult {
-        val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password)
-        )
+    fun authenticateUser(username: String, password: String): AuthLoginResult {
+        val authentication = try {
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(username, password)
+            )
+        } catch (e: AuthenticationException) {
+            return AuthLoginFail
+        }
         SecurityContextHolder.getContext().authentication = authentication
         val userDetails = authentication.principal as UserDetailsImpl
         val jwtCookie = jwtUtils.generateJwtCookie(userDetails)
+        val roles = userDetails.authorities.map {
+            apiDomainService.roleStringToEnum[it.authority.toString()]
+                ?: throw RuntimeException("Could not convert authority to role")
+        }
         return AuthLoginSuccess(
             id = userDetails.id,
             username = userDetails.username,
             email = userDetails.email,
-            roles = userDetails.authorities.map { it.authority.toString() },
+            roles = roles,
             jwtCookie = jwtCookie.toString()
         )
     }
@@ -44,7 +52,6 @@ class AuthService(
     fun registerUser(
         username: String,
         password: String,
-        rolesStrings: Set<String>,
         email: String,
     ): AuthRegisterResult {
         if (userRepository.existsByUsernameIgnoreCase(username)) {
@@ -53,20 +60,9 @@ class AuthService(
         if (userRepository.existsByEmailIgnoreCase(email)) {
             return AuthEmailExistsFail
         }
-        val roles = if (rolesStrings.isEmpty()) {
-            listOf(roleRepository.findByName(ERole.ROLE_USER) ?: throw RuntimeException("Role not found"))
-        } else {
-            rolesStrings.map {
-                val roleEnum = apiDomainService.roleStringToEnum[it]
-                    ?: throw RuntimeException("Unrecognized role")
-                roleRepository.findByName(roleEnum) ?: throw RuntimeException("Role not found")
-            }
-        }.toSet()
-        val user = try {
-            User(username = username, password = passwordEncoder.encode(password), roles = roles, email = email)
-        } catch (e: Exception) {
-            return AuthInvalidParametersFail
-        }
+        val roles =
+            listOf(roleRepository.findByName(ERole.ROLE_USER) ?: throw RuntimeException("Role not found")).toSet()
+        val user = User(username = username, password = passwordEncoder.encode(password), roles = roles, email = email)
         return try {
             logger.info("Saving new user [{}]", user)
             userRepository.save(user)

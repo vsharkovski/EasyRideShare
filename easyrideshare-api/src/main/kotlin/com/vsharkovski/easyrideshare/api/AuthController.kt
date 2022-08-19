@@ -3,6 +3,7 @@ package com.vsharkovski.easyrideshare.api
 import com.vsharkovski.easyrideshare.domain.*
 import com.vsharkovski.easyrideshare.security.jwt.JwtUtils
 import com.vsharkovski.easyrideshare.security.service.AuthService
+import com.vsharkovski.easyrideshare.service.ApiDomainService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,14 +16,20 @@ import javax.validation.Valid
 @RequestMapping("/api/auth")
 class AuthController(
     val authService: AuthService,
-    val jwtUtils: JwtUtils
+    val jwtUtils: JwtUtils,
+    val apiDomainService: ApiDomainService
 ) {
     @PostMapping("/sign_in")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<AuthResponse> =
-        when (val result = authService.authenticateUser(loginRequest)) {
+        when (val result = authService.authenticateUser(loginRequest.username, loginRequest.password)) {
             is AuthLoginSuccess ->
                 ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, result.jwtCookie)
-                    .body(AuthUserInfoResponse(result.id, result.username, result.roles))
+                    .body(
+                        AuthUserInfoResponse(
+                            result.id,
+                            result.username,
+                            result.roles.mapNotNull { apiDomainService.roleEnumToString[it] })
+                    )
             is AuthLoginFail ->
                 ResponseEntity.badRequest().body(AuthMessageResponse(false, "Bad credentials"))
         }
@@ -32,7 +39,6 @@ class AuthController(
         when (authService.registerUser(
             username = registrationRequest.username,
             password = registrationRequest.password,
-            rolesStrings = registrationRequest.role,
             email = registrationRequest.email
         )) {
             is AuthRegisterSuccess ->
