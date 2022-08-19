@@ -1,13 +1,7 @@
 <nav class="navbar navbar-dark text-bg-dark navbar-expand-sm fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLinkActive="active" routerLink="/">
-      Easy Ride Share
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      (click)="isNavbarCollapsed = !isNavbarCollapsed"
-    >
+    <a class="navbar-brand" routerLinkActive="active" routerLink="/"> Easy Ride Share </a>
+    <button class="navbar-toggler" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" [ngbCollapse]="isNavbarCollapsed">
@@ -19,27 +13,14 @@
       <ul class="navbar-nav">
         <li class="nav-item" *ngIf="authUser">
           <span class="text-light text-center">
-            <a class="nav-link" [routerLink]="['/profile', authUser.id]"
-              >Welcome, {{ authUser.username }}</a
-            ></span
+            <a class="nav-link" [routerLink]="['/profile', authUser.id]">Welcome, {{ authUser.username }}</a></span
           >
         </li>
         <li class="nav-item" *ngIf="!authUser">
-          <a
-            class="nav-link"
-            [routerLink]="['/sign-in']"
-            [queryParams]="{ r: currentUrl }"
-            >Sign in</a
-          >
+          <a class="nav-link" [routerLink]="['/sign-in']" [queryParams]="{ r: currentUrl }">Sign in</a>
         </li>
         <li class="nav-item" *ngIf="authUser">
-          <button
-            type="button"
-            class="btn btn-outline-dark nav-link"
-            (click)="onLogout()"
-          >
-            Sign out
-          </button>
+          <button type="button" class="btn btn-outline-dark nav-link" (click)="onLogout()">Sign out</button>
         </li>
       </ul>
     </div>
