@@ -1,7 +1,7 @@
 export interface Response {
-    success: boolean;
+  success: boolean;
 }
 
 export interface MessageResponse extends Response {
-    message: string;
+  message: string;
 }

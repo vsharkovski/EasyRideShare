@@ -5,16 +5,16 @@ import { NotFoundComponent } from './component/not-found/not-found.component';
 import { LoginComponent } from './component/login/login.component';
 
 const routes: Routes = [
-    { path: 'home', component: HomeFeedComponent },
-    { path: 'sign-in', component: LoginComponent },
-    { path: 'profile/:id', component: HomeFeedComponent },
-    { path: 'not-found', component: NotFoundComponent },
-    { path: '', pathMatch: 'full', redirectTo: 'home' },
-    { path: '**', pathMatch: 'full', redirectTo: 'not-found' },
+  { path: 'home', component: HomeFeedComponent },
+  { path: 'sign-in', component: LoginComponent },
+  { path: 'profile/:id', component: HomeFeedComponent },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
+  { path: '**', pathMatch: 'full', redirectTo: 'not-found' },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

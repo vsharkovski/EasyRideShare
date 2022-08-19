@@ -13,7 +13,7 @@ import { NotFoundComponent } from './component/not-found/not-found.component';
 import { httpInterceptorProviders } from './interceptor/http-interceptor';
 import { LoginComponent } from './component/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './component/register/register.component';
 
 @NgModule({
     declarations: [
