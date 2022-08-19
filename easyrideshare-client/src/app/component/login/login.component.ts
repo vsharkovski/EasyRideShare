@@ -56,7 +56,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (time) => {
           this.redirectElapsedTime = time;
-          console.log('Got time', time);
         },
         complete: () => {
           if (this.redirectElapsedTime === undefined) {
@@ -64,7 +63,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
           const redirect = this.route.snapshot.queryParams['r'];
           const newRoute = redirect !== undefined ? [redirect] : ['/home'];
-          console.log('Login redirect', newRoute);
           this.router.navigate(newRoute);
         },
       });
