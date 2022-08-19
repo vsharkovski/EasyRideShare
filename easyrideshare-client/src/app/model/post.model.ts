@@ -1,6 +1,6 @@
 import { Location } from './location.model';
 import { PostStatus } from './post-status.enum';
-import { TransportType } from './transport-type';
+import { TransportType } from './transport-type.enum';
 import { User } from './user.model';
 
 export interface Post {
