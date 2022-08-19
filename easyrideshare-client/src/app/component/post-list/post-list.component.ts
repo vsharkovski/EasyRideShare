@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Post } from 'src/app/model/post.model';
 
 @Component({
   selector: 'ers-post-list',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./post-list.component.css'],
 })
 export class PostListComponent implements OnInit {
+  @Input() posts!: Post[];
+
   constructor() {}
 
   ngOnInit(): void {}
