@@ -16,7 +16,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   currentUrl: String = '';
 
   authUserSubscription?: Subscription;
-  routerSubscription?: Subscription;
 
   constructor(
     private router: Router,
@@ -30,21 +29,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         this.authUser = user;
       });
-    this.routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        const url = event.urlAfterRedirects;
-        console.log('Url', url);
-        if (!url.startsWith('/sign-in')) {
-          console.log('Updating query param');
-          this.currentUrl = event.urlAfterRedirects;
-        }
-      }
-    });
   }
 
   ngOnDestroy(): void {
     this.authUserSubscription?.unsubscribe();
-    this.routerSubscription?.unsubscribe();
   }
 
   onLogout(): void {

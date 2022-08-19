@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { iif, of, Subscription, switchMap, take, timer } from 'rxjs';
+import { RouteTrackingService } from 'src/app/service/route-tracking.service';
 import { AuthMessage, AuthService } from '../../service/auth.service';
 import { StorageService } from '../../service/storage.service';
 
@@ -23,28 +24,40 @@ export class LoginComponent implements OnInit, OnDestroy {
     ],
     password: ['', [Validators.required, Validators.maxLength(40)]],
   });
-
+  formSubmitted: boolean = false;
   authMessage?: AuthMessage;
   readonly redirectWaitTime: number = 3;
   redirectElapsedTime?: number = undefined;
 
-  redirectSubscription?: Subscription;
   authMessageSubscription?: Subscription;
+  redirectSubscription?: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private storageService: StorageService,
-    private route: ActivatedRoute,
+    private routeTrackingService: RouteTrackingService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    // If already logged in when entering the page, redirect to home
+    this.storageService
+      .getUser()
+      .pipe(take(1))
+      .subscribe((user) => {
+        if (user !== undefined && !this.formSubmitted) {
+          this.router.navigate(['/home']);
+        }
+      });
+
     this.authMessageSubscription = this.authService
       .getMessages()
       .subscribe((message) => {
         this.authMessage = message;
       });
+
+    // When user logs in, start timer and redirect after time has passed
     this.redirectSubscription = this.storageService
       .getUser()
       .pipe(
@@ -58,19 +71,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.redirectElapsedTime = time;
         },
         complete: () => {
-          if (this.redirectElapsedTime === undefined) {
-            return;
+          if (this.redirectElapsedTime !== undefined) {
+            this.routeTrackingService.navigateToPreviousUrl();
           }
-          const redirect = this.route.snapshot.queryParams['r'];
-          const newRoute = redirect !== undefined ? [redirect] : ['/home'];
-          this.router.navigate(newRoute);
         },
       });
   }
 
   ngOnDestroy(): void {
-    this.redirectSubscription?.unsubscribe();
     this.authMessageSubscription?.unsubscribe();
+    this.redirectSubscription?.unsubscribe();
   }
 
   onSubmit(): void {
@@ -79,6 +89,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     const { username, password } = this.form.value;
     this.authService.login(username!, password!);
+    this.formSubmitted = true;
   }
 
   get usernameField(): AbstractControl {

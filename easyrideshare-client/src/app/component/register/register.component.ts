@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { Subscribable, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription, take } from 'rxjs';
 import { AuthMessage, AuthService } from 'src/app/service/auth.service';
+import { StorageService } from 'src/app/service/storage.service';
 import { passwordConfirmValidator } from 'src/app/shared/password-confirm.validator';
 
 @Component({
@@ -44,10 +46,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private storageService: StorageService,
+
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    // If already logged in when entering the page, redirect to home
+    this.storageService
+      .getUser()
+      .pipe(take(1))
+      .subscribe((user) => {
+        if (user !== undefined) {
+          this.router.navigate(['/home']);
+        }
+      });
+
     this.authMessageSubscription = this.authService
       .getMessages()
       .subscribe((message) => (this.authMessage = message));

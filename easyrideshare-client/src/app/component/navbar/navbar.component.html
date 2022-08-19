@@ -17,7 +17,7 @@
           >
         </li>
         <li class="nav-item" *ngIf="!authUser">
-          <a class="nav-link" [routerLink]="['/sign-in']" [queryParams]="{ r: currentUrl }">Sign in</a>
+          <a class="nav-link" [routerLink]="['/sign-in']">Sign in</a>
         </li>
         <li class="nav-item" *ngIf="!authUser">
           <a class="nav-link" [routerLink]="['/sign-up']">Sign up</a>
